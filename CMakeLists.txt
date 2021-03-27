@@ -23,14 +23,20 @@ set(ANGLE_SETUP_OUTPUT
     "${CMAKE_CURRENT_SOURCE_DIR}/angle/.gclient"
 )
 
+if (WIN32)
+    set(env ${CMAKE_COMMAND} -E env "PATH=${CMAKE_CURRENT_SOURCE_DIR}/depot_tools;$ENV{PATH}")
+else()
+    set(env env "PATH=${CMAKE_CURRENT_SOURCE_DIR}/depot_tools:$ENV{PATH}")
+endif()
+
 add_custom_command(
     COMMENT "Setting up angle"
     OUTPUT ${ANGLE_SETUP_OUTPUT}
     VERBATIM
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/angle
 
-    COMMAND ${Python2_EXECUTABLE} scripts/bootstrap.py
-    COMMAND gclient sync
+    COMMAND ${env} ${Python2_EXECUTABLE} scripts/bootstrap.py
+    COMMAND ${env} gclient sync
 
     # On Linux, run install deps script
     COMMAND "$<IF:$<BOOL:1>,build/install-build-deps.sh,echo>"
