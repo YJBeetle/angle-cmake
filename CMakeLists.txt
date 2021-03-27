@@ -45,6 +45,11 @@ else()
     set(env env "PATH=${CMAKE_CURRENT_SOURCE_DIR}/depot_tools:$ENV{PATH}")
 endif()
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    # On Linux, run install deps script
+    set(linux_install_build_deps build/install-build-deps.sh)
+endif()
+
 add_custom_command(
     COMMENT "Setting up angle"
     OUTPUT ${ANGLE_SETUP_OUTPUT}
@@ -53,9 +58,7 @@ add_custom_command(
 
     COMMAND ${env} ${Python2_EXECUTABLE} scripts/bootstrap.py
     COMMAND ${env} gclient sync
-
-    # On Linux, run install deps script
-    COMMAND "$<IF:$<BOOL:1>,build/install-build-deps.sh,echo>"
+    COMMAND ${linux_install_build_deps}
 )
 add_custom_target(angle-setup DEPENDS
     ${ANGLE_SETUP_OUTPUT}
