@@ -12,6 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+function(InitSubmodule target submodule_dir)
+    if (NOT TARGET ${target})
+        if(NOT EXISTS ${submodule_dir}/.git)
+            message(WARNING "
+        Target ${target} from submodule ${submodule_dir} missing.
+        Running 'git submodule update --init' to download it:
+            ")
+
+            execute_process(COMMAND git -C ${SWIFTSHADER_DIR} submodule update --init ${submodule_dir})
+        endif()
+    endif()
+endfunction()
+
+InitSubmodule(angle angle)
+
+InitSubmodule(depot_tools depot_tools)
 
 # angle setup
 
