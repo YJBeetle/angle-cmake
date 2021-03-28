@@ -110,8 +110,8 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E remove -f ${ANGLE_BUILD_OUTPUT}
 
     # gn build angle targets we want
-    COMMAND ${GN_COMMAND} gen ${ANGLE_OUTPUT_DIR}
-    COMMAND autoninja -C ${ANGLE_OUTPUT_DIR} libEGL libGLESv2
+    COMMAND ${env} ${GN_COMMAND} gen ${ANGLE_OUTPUT_DIR}
+    COMMAND ${env} autoninja -C ${ANGLE_OUTPUT_DIR} libEGL libGLESv2
 
     # Always update time stamps of output files since dependencies of this command (${ANGLE_SRC_FILES})
     # include files that aren't actually used to build the output files.
