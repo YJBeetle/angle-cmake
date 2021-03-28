@@ -47,7 +47,7 @@ endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     # On Linux, run install deps script
-    set(linux_install_build_deps build/install-build-deps.sh)
+    set(linux_install_build_deps build/install-build-deps.sh --no-arm --no-nacl --no-chromeos-fonts)
 endif()
 
 add_custom_command(
