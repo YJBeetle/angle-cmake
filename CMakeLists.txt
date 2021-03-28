@@ -14,13 +14,13 @@
 
 function(InitSubmodule target submodule_dir)
     if (NOT TARGET ${target})
-        if(NOT EXISTS ${submodule_dir}/.git)
+        if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${submodule_dir}/.git)
             message(WARNING "
         Target ${target} from submodule ${submodule_dir} missing.
         Running 'git submodule update --init' to download it:
             ")
 
-            execute_process(COMMAND git -C ${SWIFTSHADER_DIR} submodule update --init ${submodule_dir})
+            execute_process(COMMAND git -C ${CMAKE_CURRENT_SOURCE_DIR} submodule update --init ${submodule_dir})
         endif()
     endif()
 endfunction()
