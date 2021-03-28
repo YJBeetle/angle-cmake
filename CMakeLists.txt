@@ -45,6 +45,12 @@ else()
     set(env env "PATH=${CMAKE_CURRENT_SOURCE_DIR}/depot_tools:$ENV{PATH}")
 endif()
 
+if (APPLE)
+    set(sed_change2dot sed -i .bak s/change2dot/./ .gclient)
+else()
+    set(sed_change2dot sed -i s/change2dot/./ .gclient)
+endif()
+
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     # On Linux, run install deps script
     set(linux_install_build_deps build/install-build-deps.sh --no-arm --no-nacl --no-chromeos-fonts)
@@ -56,7 +62,8 @@ add_custom_command(
     VERBATIM
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/angle
 
-    COMMAND ${env} ${Python2_EXECUTABLE} scripts/bootstrap.py
+    COMMAND ${env} gclient config --name change2dot --unmanaged https://chromium.googlesource.com/angle/angle.git
+    COMMAND ${sed_change2dot}
     COMMAND ${env} gclient sync
     COMMAND ${linux_install_build_deps}
 )
